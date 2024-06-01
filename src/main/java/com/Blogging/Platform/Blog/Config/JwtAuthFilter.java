@@ -2,6 +2,8 @@ package com.Blogging.Platform.Blog.Config;
 
 import java.io.IOException;
 
+import lombok.NonNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.Blogging.Platform.Blog.Service.JwtService;
+import com.Blogging.Platform.Blog.Service.TokenBlacklistService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,20 +31,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private final UserDetailsService userDetailsService;
 
+    @Autowired
+    private final TokenBlacklistService tokenBlacklistService;
+
     // step 2.
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         // verify whether request has authorization header and it has bearer in it.
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String email;
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
         // Extract the jwt from Authorization.
         jwt = authHeader.substring(7);
+
+        if (tokenBlacklistService.isTokenBlacklisted(jwt)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
         // verify whether user is present in DB.
         // verify whether token is valid.
@@ -70,7 +82,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     // step 1.
     // verify if it is whitelisted path and if YES then do anything.
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
         return request.getServletPath().contains("/api/v1/auth");
     }
 
