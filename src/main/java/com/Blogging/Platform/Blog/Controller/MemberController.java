@@ -17,10 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 
 @RestController
 @RequestMapping("api/v1/management")
@@ -29,7 +30,7 @@ public class MemberController {
     private PostService postService;
 
     @PostMapping("post")
-    public ResponseEntity<String> createPost(@RequestBody BlogPost blogPost, @AuthenticationPrincipal User user ){
+    public ResponseEntity<String> createPost(@RequestBody BlogPost blogPost, @AuthenticationPrincipal User user) {
         String response = postService.createPost(blogPost, user);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -39,14 +40,26 @@ public class MemberController {
 
         List<UserBlogPost> posts = postService.getPostByAuthor(user.getId(), user.getFirstName());
 
-        return new ResponseEntity<>(posts, HttpStatus.OK); 
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     @GetMapping("post/{id}")
-    public ResponseEntity<List<UserBlogPost>> getPostById(@PathVariable Integer id, @AuthenticationPrincipal User user){    
+    public ResponseEntity<List<UserBlogPost>> getPostById(@PathVariable Integer id,
+            @AuthenticationPrincipal User user) {
         List<UserBlogPost> response = postService.findPostById(id, user.getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping("update_post/{id}")
+    public ResponseEntity<String> updatePost(@PathVariable Integer id, @RequestBody BlogPost blogPost, @AuthenticationPrincipal User user){
+        String response = postService.updatePost(id, blogPost, user.getId());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
+    @DeleteMapping("delete_post/{id}")
+    public ResponseEntity<Boolean> DeleteBlogPost(@PathVariable Integer id,
+    @AuthenticationPrincipal User user){
+        Boolean response = postService.deleteBlogPost(id,user.getId());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
