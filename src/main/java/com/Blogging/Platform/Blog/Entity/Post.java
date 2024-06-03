@@ -24,7 +24,7 @@ public class Post {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    private String titile;
+    private String title;
 
     @Column(length=1000)
     private String content;
@@ -33,7 +33,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "author")
-    private User user;
+    private User author;
 
     @PrePersist
     protected void onCreate() {

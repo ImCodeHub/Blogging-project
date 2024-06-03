@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-    @GetMapping("/file")
-    @PreAuthorize("hasAuthority('admin:read')")
+    @GetMapping("list")
+    // @PreAuthorize("hasAuthority('admin:read')")
     public String getAdmin() {
         return "Secured Endpoint: : GET - Admin controller.";
     }
     
-    @PostMapping("/post")
-    @PreAuthorize("hasAuthority('admin:create')")
+    @PostMapping("post")
+    // @PreAuthorize("hasAuthority('admin:create')")
     public String post(){
-        return "Secured Endpoint: : GET - Admin controller.";
+        return "Secured Endpoint: : POST - Admin controller.";
     }
 
 }
