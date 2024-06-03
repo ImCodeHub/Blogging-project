@@ -84,10 +84,39 @@ public class PostService implements PostServiceImpl {
             list.add(blog);
 
             return list;
-
         }else{
             throw new PostNotFoundException("No Blog Post found By this Id");
         }
     }
+
+    @Override
+    public String updatePost(Integer postId, BlogPost blogPost, Integer authorId) {
+        Optional<Post> optional = postRepository.findPostByIdAndAuthor_Id(postId, authorId);
+        if(optional.isPresent()){
+            Post post = optional.get();
+
+            post.setTitle(blogPost.getTitle());
+            post.setContent(blogPost.getContent());
+
+            postRepository.save(post);
+
+            return "Blog post details has been updated for: "+postId;
+
+        }else{
+            throw new PostNotFoundException("No Blog post found by this Id to update the blog post.");
+        }
+
+    }
+
+    @Override
+    public Boolean deleteBlogPost(Integer postId, Integer authorId) {
+        Optional<Post> optional = postRepository.findPostByIdAndAuthor_Id(postId,authorId);
+        if(optional.isPresent()){
+            postRepository.deleteById(postId);
+            return true;
+        }else{
+            throw new PostNotFoundException("No Blog Post found By this Id: "+postId);
+        }
+    }    
 
 }
