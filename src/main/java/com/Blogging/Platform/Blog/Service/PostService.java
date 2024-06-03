@@ -2,6 +2,7 @@ package com.Blogging.Platform.Blog.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,9 +70,21 @@ public class PostService implements PostServiceImpl {
 
     @Override
     public List<UserBlogPost> findPostById(Integer postId, Integer authorId) {
-        List<Post> post = postRepository.findByPostIdAndAuthorId(postId,authorId);
-        if(post != null){
-            
+        List<UserBlogPost> list = new ArrayList<>();
+        Optional<Post> optional = postRepository.findPostByIdAndAuthor_Id(postId,authorId);
+        if(optional.isPresent()){
+            Post post = optional.get();
+
+            UserBlogPost blog = new UserBlogPost();
+
+            blog.setTitle(post.getTitle());
+            blog.setContent(post.getContent());
+            blog.setCreatedAt(post.getCreatedAt());
+
+            list.add(blog);
+
+            return list;
+
         }else{
             throw new PostNotFoundException("No Blog Post found By this Id");
         }
