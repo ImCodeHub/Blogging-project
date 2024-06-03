@@ -11,4 +11,6 @@ public interface PostServiceImpl {
     // public List<Post> getAllPost();
     public List<UserBlogPost> getPostByAuthor(Integer authorId,String author);
     public List<UserBlogPost> findPostById(Integer postId, Integer authorId);
+    public String updatePost(Integer postId, BlogPost blogPost, Integer authorId);
+    public Boolean deleteBlogPost(Integer postId, Integer authorId);
 }
