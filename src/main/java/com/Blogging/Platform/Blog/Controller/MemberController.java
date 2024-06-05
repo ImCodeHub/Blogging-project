@@ -3,7 +3,6 @@ package com.Blogging.Platform.Blog.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Blogging.Platform.Blog.Entity.Post;
 import com.Blogging.Platform.Blog.Entity.User;
 import com.Blogging.Platform.Blog.Model.BlogPost;
 import com.Blogging.Platform.Blog.Model.UserBlogPost;
@@ -51,15 +50,16 @@ public class MemberController {
     }
 
     @PutMapping("update_post/{id}")
-    public ResponseEntity<String> updatePost(@PathVariable Integer id, @RequestBody BlogPost blogPost, @AuthenticationPrincipal User user){
+    public ResponseEntity<String> updatePost(@PathVariable Integer id, @RequestBody BlogPost blogPost,
+            @AuthenticationPrincipal User user) {
         String response = postService.updatePost(id, blogPost, user.getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("delete_post/{id}")
     public ResponseEntity<Boolean> DeleteBlogPost(@PathVariable Integer id,
-    @AuthenticationPrincipal User user){
-        Boolean response = postService.deleteBlogPost(id,user.getId());
+            @AuthenticationPrincipal User user) {
+        Boolean response = postService.deleteBlogPost(id, user.getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
