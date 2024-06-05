@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import com.Blogging.Platform.Blog.Entity.User;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
