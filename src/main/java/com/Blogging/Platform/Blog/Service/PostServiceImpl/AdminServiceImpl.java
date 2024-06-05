@@ -9,5 +9,5 @@ public interface AdminServiceImpl {
     public List<UserBlogPost> getAllPost();
     public List<UserListModel> getAllAuthor();
     public Boolean deletePost(Integer postId);
-    // public Boolean deleteAuthor(Integer authorId);
+    public Boolean deleteAuthor(Integer authorId);
 }
