@@ -95,9 +95,9 @@ public class AdminService implements AdminServiceImpl {
 
     @Override
     public Boolean deleteAuthor(Integer authorId) {
-        Optional<User> optional = userRepository.findById(authorId);
+        Optional<User> optional = userRepository.findByIdAndRole(authorId, Role.MEMBER);
         if(optional.isPresent()){
-            postRepository.deleteById(authorId);
+            userRepository.deleteById(authorId);
             return true;
         }else{
             throw new AuthorNotFoundException("Author (User) not found By this Id: "+authorId);
