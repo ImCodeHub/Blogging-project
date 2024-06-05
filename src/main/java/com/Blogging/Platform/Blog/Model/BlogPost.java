@@ -21,5 +21,5 @@ public class BlogPost {
     private User author;
 
     private LocalDateTime createdAt;
-    
+     
 }
