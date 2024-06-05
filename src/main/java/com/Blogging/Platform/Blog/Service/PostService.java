@@ -57,7 +57,7 @@ public class PostService implements PostServiceImpl {
                 userBlogPost.setContent(post.getContent());
                 userBlogPost.setCreatedAt(post.getCreatedAt());
                 
-                userBlogPost.setAuthor(authorName);
+                // userBlogPost.setAuthor(authorName);
                 postList.add(userBlogPost);
             }
             return postList;
