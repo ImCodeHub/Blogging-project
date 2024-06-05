@@ -22,7 +22,6 @@ import com.Blogging.Platform.Blog.Repository.PostRepository;
 import com.Blogging.Platform.Blog.Repository.UserRepository;
 import com.Blogging.Platform.Blog.Service.PostServiceImpl.AdminServiceImpl;
 
-
 @Service
 public class AdminService implements AdminServiceImpl {
 
@@ -43,18 +42,18 @@ public class AdminService implements AdminServiceImpl {
                 UserBlogPost blogPost = new UserBlogPost();
                 blogPost.setId(post.getId());
                 blogPost.setTitle(post.getTitle());
-                blogPost.setAuthor(post.getAuthor().getFirstName()+" "+post.getAuthor().getLastName());
+                blogPost.setAuthor(post.getAuthor().getFirstName() + " " + post.getAuthor().getLastName());
 
                 blogPost.setContent(post.getContent());
                 blogPost.setCreatedAt(post.getCreatedAt());
-                
+
                 list.add(blogPost);
             }
             logger.info("All post data retrive from table");
             return list;
-        }else{ 
+        } else {
             logger.error("No post found from the Post table");
-           throw new PostNotFoundException("No post found in the list.");
+            throw new PostNotFoundException("No post found in the list.");
         }
     }
 
@@ -65,34 +64,33 @@ public class AdminService implements AdminServiceImpl {
         List<Object[]> users = userRepository.findAllAuthorsWithPostCountNative();
         logger.info("user details received {}", users);
         if (users != null) {
-            for (Object[] user: users) {
-                    UserListModel userListModel = new UserListModel(
-                        (Integer)user[0],user[1].toString(),user[2].toString(),user[3].toString()
-                    );
+            for (Object[] user : users) {
+                UserListModel userListModel = new UserListModel(
+                        (Integer) user[0], user[1].toString(), user[2].toString(), user[3].toString());
 
-                    // userListModel.setId(user.getId());
-                    // userListModel.setUserName(user.getFirstName()+" "+user.getLastName());
-                    // userListModel.setUserEmail(user.getEmail());
-                    
-                    list.add(userListModel);
+                // userListModel.setId(user.getId());
+                // userListModel.setUserName(user.getFirstName()+" "+user.getLastName());
+                // userListModel.setUserEmail(user.getEmail());
+
+                list.add(userListModel);
             }
             logger.info("return the user list from ");
             return list;
-        }
-        else{
+        } else {
             logger.error("User details list not found");
             throw new AuthorNotFoundException("Author list not found");
         }
     }
 
     @Override
-    public Boolean deletePost( Integer postId) {
-    Optional<Post> optional = postRepository.findById(postId);
-    if(optional.isPresent()){
-        postRepository.deleteById(postId);
-        return true;
-    }
-    throw new UnsupportedOperationException("Unimplemented method 'deletePost'");
+    public Boolean deletePost(Integer postId) {
+        Optional<Post> optional = postRepository.findById(postId);
+        if (optional.isPresent()) {
+            postRepository.deleteById(postId);
+            return true;
+        } else {
+            throw new PostNotFoundException("Post not found by this id: " + postId);
+        }
     }
 
     // @Override
