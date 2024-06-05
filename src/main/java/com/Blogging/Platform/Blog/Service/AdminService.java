@@ -93,11 +93,16 @@ public class AdminService implements AdminServiceImpl {
         }
     }
 
-    // @Override
-    // public Boolean deleteAuthor(Integer authorId) {
-    // // TODO Auto-generated method stub
-    // throw new UnsupportedOperationException("Unimplemented method
-    // 'deleteAuthor'");
-    // }
+    @Override
+    public Boolean deleteAuthor(Integer authorId) {
+        Optional<User> optional = userRepository.findById(authorId);
+        if(optional.isPresent()){
+            postRepository.deleteById(authorId);
+            return true;
+        }else{
+            throw new AuthorNotFoundException("Author (User) not found By this Id: "+authorId);
+        }
+    
+    }
 
 }
