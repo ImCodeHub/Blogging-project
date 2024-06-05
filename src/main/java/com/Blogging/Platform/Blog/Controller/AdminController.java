@@ -50,6 +50,12 @@ public class AdminController {
         Boolean response = adminService.deletePost(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("deleteUser/{id}")
+    public ResponseEntity<Boolean> deleteAuthorById(@PathVariable Integer id){
+        Boolean response = adminService.deleteAuthor(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     
 }
    
